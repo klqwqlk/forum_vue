@@ -1,15 +1,33 @@
 <template>
   <div>
-    <el-table :data="tmpdate" style="width: 100%">
-      <el-table-column prop="date" label="日期" width="full"> </el-table-column>
+     <CommentChild ref="commentChild"></CommentChild>
+    <el-table :data="records" style="width: 100%">
+      <el-table-column prop="user" label="日期" width="full">
+        <template slot-scope="scope">
+          <el-form v-model="scope.row" :inline="true" class="demo-form-inline">
+            <el-form-item :label="scope.row.username">
+              {{ scope.row.userid }}
+              {{ scope.row.username }}
+              {{ scope.row.content }}
+              {{ scope.row.comments }}
+              <div>
+
+              </div>
+            </el-form-item>
+            <br></br>
+              <el-button type="text" @click="showComment()">评论</el-button>
+            </el-form-item>
+          </el-form>
+        </template>
+      </el-table-column>
     </el-table>
 
     <span class="demonstration">完整功能</span>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="currentPage4"
-      :page-sizes="[10, 20, 50, 100, 200, 300, 400]"
+      :current-page="currentPage"
+      :page-sizes="[10, 20, 50]"
       :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="50"
@@ -19,69 +37,52 @@
 </template>
 
 <script>
-
+import CommentChild from "./Comment.vue";
 export default {
   name: 'Main',
+  components: {
+    CommentChild
+  },
   data() {
     return {
-      currentPage4: 1,
+      currentPage: 1,
       pageSize: 10,
-      tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-      tableData2: [{
-        date: '22-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '22-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1517 弄'
-      }, {
-        date: '22-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1519 弄'
-      }, {
-        date: '22-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1516 弄'
-      }],
-      tmpdate: []
+      records: [
+        {
+          userid: 1,
+          username: 'Alice',
+          content: 'l love you!!爱你！',
+          comments: ['xxxx', 'yyyy']
+        },
+        {
+          userid: 2,
+          username: 'Ben',
+          content: 'l love you!!爱你！',
+          comments: ['xxxx', 'yyyy']
+        }
+      ]
+
     }
 
   },
   methods: {
     handleSizeChange(val) {
-      if (val > this.pageSize) {
-        this.pageSize = val;
+      this.pageSize = val;
+      for (var i = 0; this.records.length < val; i++) {
+        this.records.push({});
       }
+      for (var i = 0; this.records.length > val; i++) {
+        this.records.pop();
+      }
+      console.log(this.records.length)
     },
     handleCurrentChange(val) {
 
       console.log(`当前页: ${val}`);
-      if (val % 2 == 0) {
-        this.tmpdate = this.tableData;
-      } else {
-        this.tmpdate = this.tableData2;
-      }
-      console.log(this.tmpdate.length)
-      for (var i = this.tmpdate.length; i < this.pageSize; i++) {
-        this.tmpdate.push({ date: '22-05-' + i })
-      }
+
+    },
+    showComment() {
+      this.$refs.commentChild.open()
     }
   }
 
