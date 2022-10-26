@@ -9,7 +9,9 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="2"> {{ username }} </el-col>
+        <el-col :span="2">
+          {{ username == "" ? "未登录" : username }}
+        </el-col>
         <el-col :span="1">
           <el-switch
             @change="switchAsideShow"
@@ -35,10 +37,11 @@
     <el-container style="height: 640px; border: 1px solid #eee">
       <el-container>
         <el-aside :width="`${asideWidth}px`" style="background-color: white">
+          <Aside></Aside>
         </el-aside>
         <!-- <button @click="switchAsideShow">aa</button> -->
         <el-main style="background-color: rgb(238, 241, 246)">
-          <Main></Main>
+          <router-view></router-view>
         </el-main>
       </el-container>
     </el-container>
@@ -46,10 +49,13 @@
 </template>
 
 <script>
-import Main from './Main.vue'
+import Aside from './Aside.vue';
 
 export default {
   name: "Ground",
+  components: {
+    Aside
+  },
   data() {
     return {
       avater: '',
@@ -73,7 +79,7 @@ export default {
 
     }
   },
-  components: { Main }
+  components: { Aside }
 }
 </script>
 

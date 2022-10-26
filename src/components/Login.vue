@@ -1,5 +1,5 @@
 <template>
-  <a>test</a>
+  <a>登录</a>
 </template>
 
 <script>

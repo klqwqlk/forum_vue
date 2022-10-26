@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-dialog title="评论" :visible.sync="dialogFormVisible">
+    <el-dialog
+      title="评论"
+      :visible.sync="dialogFormVisible"
+      close="handleDialogClose"
+    >
       <div v-for="(item, index) in records" :key="index">
         <div
           v-if="item.level == 0"
@@ -36,13 +40,13 @@
         closable
         type="info"
         :disable-transitions="false"
-        @close="handleClose()"
+        @close="handleTagClose()"
       >
         {{ CommentToWho }}
       </el-tag>
 
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="cancelButton">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">
           确 定
         </el-button>
@@ -97,8 +101,18 @@ export default {
       console.log(username);
       this.CommentToWho = username
     },
-    handleClose() {
+    handleTagClose() {
       this.CommentToWho = ''
+    },
+    handleDialogClose() {
+      this.textarea = '';
+      this.CommentToWho = '';
+    },
+    cancelButton() {
+
+      this.dialogFormVisible = false;
+      this.textarea = '';
+      this.CommentToWho = '';
     }
   }
 };
