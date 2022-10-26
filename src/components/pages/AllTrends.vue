@@ -2,7 +2,7 @@
   <div>
      <CommentChild ref="commentChild"></CommentChild>
     <el-table :data="records" style="width: 100%">
-      <el-table-column prop="user" label="日期" width="full">
+      <el-table-column prop="user" label="全部动态" width="full">
         <template slot-scope="scope">
           <el-form v-model="scope.row" :inline="true" class="demo-form-inline">
             <el-form-item>
@@ -14,11 +14,13 @@
               </div>
             </el-form-item>
             <br></br>
+              发表于&nbsp;<b>{{scope.row.pubishTime}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <el-button type="text" @click="showComment()">评论</el-button>
            &nbsp;
             <el-button type="text" @click="encourge(scope.row)"> <i v-if="scope.row.encourgeFlag" style="background-color:lightblue" class="el-icon-thumb">已赞</i>
               <i v-else  class="el-icon-thumb">赞一个</i>
            </el-button>
+            &nbsp;
             <el-button type="text" @click="star(scope.row)"> <i v-if="scope.row.starFlag" style="background-color:yellow" class="el-icon-star-off">已收藏</i>
              <i v-else  class="el-icon-star-off">收藏</i>
             </el-button>
@@ -62,7 +64,8 @@ export default {
           content: 'jkljgklagjkljgklagjkljgkjkljgklagjkljgklagjjkljgklagjkljgklagkljgklagjkljgklagjkljgklagjkljgklaglagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklags',
           comments: ['xxxx', 'yyyy'],
           encourgeFlag: true,
-          starFlag: true
+          starFlag: true,
+          pubishTime: '2022-10-26 17:20'
         },
         {
           commentID: 1,
@@ -71,7 +74,8 @@ export default {
           content: 'jkljgklagjkljgklagjkljgkjkljgklagjkljgklagjjkljgklagjkljgklagkljgklagjkljgklagjkljgklagjkljgklaglagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklagjkljgklag',
           comments: ['xxxx', 'yyyy'],
           encourgeFlag: false,
-          starFlag: false
+          starFlag: false,
+          pubishTime: '2022-10-26 10:20'
         }
       ]
 

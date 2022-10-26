@@ -4,14 +4,16 @@
       title="评论"
       :visible.sync="dialogFormVisible"
       close="handleDialogClose"
+      :before-close="handleDialogClose"
     >
       <div v-for="(item, index) in records" :key="index">
         <div
           v-if="item.level == 0"
           @click="selectComment(item.fromUserId, item.fromUserName)"
         >
-          <span style="background-color: gray">{{ item.fromUserName }}</span
-          >:&nbsp;&nbsp;{{ item.content }}
+          <span style="background-color: gray">{{ item.fromUserName }}</span>
+          &nbsp;<span class="time">{{ item.pubishTime }}</span>
+          &nbsp;&nbsp;&nbsp;&nbsp;{{ item.content }}
         </div>
         <div
           v-if="item.level == 1"
@@ -24,6 +26,7 @@
             item.toUserName
           }}</span
           >:&nbsp;&nbsp;{{ item.content }}
+          <span class="time">{{ item.pubishTime }}</span>
         </div>
       </div>
 
@@ -69,6 +72,7 @@ export default {
           fromUserName: 'user1',
           toUserName: 'user2',
           content: 'l love you!! user2！l love you!! user2！l love you!! user2！l love you!! user2！l love you!! user2！l love you!! user2！l love you!! user2！',
+          pubishTime: '2022-10-26 9:10'
         },
         {
           level: 1,
@@ -77,6 +81,7 @@ export default {
           fromUserName: 'user2',
           toUserName: 'user1',
           content: 'l love you!! user1！',
+          pubishTime: '2022-10-26 17:20'
         },
         {
           level: 1,
@@ -85,6 +90,7 @@ export default {
           fromUserName: 'user3',
           toUserName: 'user2',
           content: 'l love you!! user2！',
+          pubishTime: '2022-10-26 23:10'
         }
       ],
       textarea: '',
@@ -105,6 +111,7 @@ export default {
       this.CommentToWho = ''
     },
     handleDialogClose() {
+      this.dialogFormVisible = false;
       this.textarea = '';
       this.CommentToWho = '';
     },
@@ -117,3 +124,8 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.time {
+}
+</style>

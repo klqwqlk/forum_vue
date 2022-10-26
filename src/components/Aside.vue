@@ -34,6 +34,11 @@
         >谁关注我</router-link
       >
     </div>
+    <div class="tag">
+      <router-link :to="{ name: 'PersonalCenter' }" replace
+        >个人中心</router-link
+      >
+    </div>
   </div>
 </template>
 

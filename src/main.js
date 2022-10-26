@@ -38,6 +38,14 @@ const routes = [
         name: "PrivateLetter",
         component: () => import("./components/pages/PrivateLetter.vue"),
         meta: { title: "私信" },
+        children: [
+          {
+            path: "/letter_Panel",
+            name: "Letter_Panel",
+            component: () => import("./components/Letter_Panel.vue"),
+            meta: { title: "全部动态" },
+          },
+        ],
       },
       {
         path: "/storage",
@@ -73,6 +81,12 @@ const routes = [
         path: "/peopleFollowMe",
         name: "PeopleFollowMe",
         component: () => import("./components/pages/PeopleFollowMe.vue"),
+        meta: { title: "我参与的话题" },
+      },
+      {
+        path: "/personalCenter",
+        name: "PersonalCenter",
+        component: () => import("./components/pages/PersonalCenter.vue"),
         meta: { title: "我参与的话题" },
       },
     ],

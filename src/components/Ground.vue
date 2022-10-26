@@ -92,4 +92,9 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+.el-main {
+  border-left: 2px silver solid;
+  padding: 0;
+}
 </style>
