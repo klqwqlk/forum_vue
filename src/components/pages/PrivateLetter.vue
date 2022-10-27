@@ -2,6 +2,11 @@
   <div class="body">
     <div class="header">
       <span>私信</span>
+      <img
+        v-if="letter_people != null"
+        height="30px"
+        :src="letter_people.ava"
+      ></img>
       <b v-if="letter_people != null">{{ letter_people.userName }}</b>
     </div>
     <el-container>
@@ -57,6 +62,9 @@ export default {
 .header :first-child {
   position: absolute;
   left: 1%;
+}
+.header b {
+  margin-left: 5px;
 }
 .el-aside {
   height: 100%;

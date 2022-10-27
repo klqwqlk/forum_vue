@@ -9,7 +9,10 @@
       <router-link
         :to="{ name: 'Letter_Panel', query: { with: `${item.id}` } }"
       >
+        <el-avatar size="small" :src="circleUrl"></el-avatar>
+
         <span class="usernameClass">{{ item.userName }}</span>
+        <el-badge :value="12" class="item"></el-badge>
       </router-link>
     </div>
   </div>
@@ -20,14 +23,17 @@
 export default {
   data() {
     return {
+      circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
       selectPeopleId: 0,
       letter_peoples: [{
         id: 0,
-        userName: 'test1'
+        userName: 'test1',
+        ava: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
       },
       {
         id: 1,
-        userName: 'test2'
+        userName: 'test2',
+        ava: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
       }]
     }
   },
