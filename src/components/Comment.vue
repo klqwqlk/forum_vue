@@ -72,9 +72,8 @@
           <!--每页显示10个子评论，如果不够10个，就不要分页-->
           <el-pagination
             v-if="item.children.length > 10"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page.sync="currentPage1"
+            @current-change="handleChildCommentPageChange"
+            :current-page.sync="childCommentPage"
             :page-size="10"
             layout="total, prev, pager, next"
             :total="item.children.length"
@@ -87,9 +86,8 @@
       <div slot="footer" class="dialog-footer">
         <div class="TotalPagination">
           <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page.sync="currentPage1"
+            @current-change="handleCommentPageChange"
+            :current-page.sync="commentPage"
             :page-size="10"
             layout="total, prev, pager, next"
             :total="30"
@@ -108,7 +106,8 @@
 export default {
   data() {
     return {
-
+      commentPage: 1, //一级评论页表
+      childCommentPage: 1, //二级评论页表
       dialogFormVisible: false,
       records: [
         {
@@ -153,6 +152,14 @@ export default {
     }
   },
   methods: {
+    //一级评论分页
+    handleCommentPageChange() {
+
+    },
+    // 二级评论分页
+    handleChildCommentPageChange() {
+
+    },
     open() { // 在父组件调用打开
       this.dialogFormVisible = true
       console.log("child open")
@@ -190,7 +197,23 @@ export default {
       this.currentClickedCommentBlock = -1;
     }
   }, mounted() {
+
+    for (var i = 0; i < 10; i++) {
+      this.records[0].children.push({
+        record: 0, //哪条记录下的评论
+        commentId: 101,  //评论id (level为0 ，为该评论id；level为1，为父评论id)
+        level: 1,
+        fromUserId: 3,
+        toUserId: 2,
+        fromUserName: 'user3',
+        toUserName: 'user2',
+        content: 'l love you!! user2！',
+        pubishTime: '2022-10-26 23:10'
+      });
+    }
     for (var i = 0; i < 7; i++) {
+
+
 
       this.records.push({
         level: 0, //0表示直接在评论下进行评论; 1表示在评论的评论下进行评论

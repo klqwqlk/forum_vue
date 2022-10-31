@@ -52,6 +52,20 @@ const routes = [
         name: "Storage",
         component: () => import("./components/pages/Storage.vue"),
         meta: { title: "我的收藏" },
+        children: [
+          {
+            path: "/storage_Dynamic",
+            name: "Storage_Dynamic",
+            component: () => import("./components/Storage_List.vue"),
+            meta: { title: "收藏的动态" },
+          },
+          {
+            path: "/storage_Article",
+            name: "Storage_Article",
+            component: () => import("./components/Storage_List.vue"),
+            meta: { title: "收藏的文章" },
+          },
+        ],
       },
       {
         path: "/concernedPeople",
@@ -96,7 +110,19 @@ const routes = [
     path: "/user",
     name: "User",
     component: () => import("./components/user/User.vue"),
-    meta: { title: "用户详情页" },
+    meta: { title: "新开用户详情页" },
+  },
+  {
+    path: "/storage/dynamic/detail/",
+    name: "Storage_Dynamic_Detail",
+    component: () => import("./components/detail/Storage_Dynamic.vue"),
+    meta: { title: "新开用户详情页" },
+  },
+  {
+    path: "/storage/article/detail/",
+    name: "Storage_Article_Detail",
+    component: () => import("./components/detail/Storage_Article.vue"),
+    meta: { title: "新开用户详情页" },
   },
 ];
 
