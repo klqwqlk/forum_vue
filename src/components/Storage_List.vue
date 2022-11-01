@@ -87,10 +87,14 @@ export default {
     },
     updateType() {
       this.typeLabel = this.storage_type.name
+      //按收藏类别
       if (this.storage_type.type == 'Dynamic') {
         this.getMyStorageDynamic();
       } else if (this.storage_type.type == 'Article') {
         this.getMyStorageArticle();
+        //按收藏文件夹
+      } else if (this.storage_type.type == 'dir') {
+        this.getMyStorageFromDir();
       }
       console.log("updateType....")
     },
@@ -130,6 +134,7 @@ export default {
       );
     },
     getMyStorageArticle() {
+
       this.records = [];
       this.records.push({
         id: 1,
@@ -153,7 +158,37 @@ export default {
           commentNum: 50
 
         });
+    },
+    //按文件夹获取收藏内容
+    getMyStorageFromDir() {
+      //收藏目录
+      console.log(this.storage_type.currentMenu);
+
+      this.records = [];
+      this.records.push({
+        id: 1,
+        pubishUser: {
+          userId: 0,
+          userName: 'user1'
+        },
+        content: '文件夹收藏的内容。。。1',
+        encourgeNum: 200,
+        commentNum: 50
+
+      },
+        {
+          id: 2,
+          pubishUser: {
+            userId: 1,
+            userName: 'user2'
+          },
+          content: '文件夹收藏的内容。。。2',
+          encourgeNum: 200,
+          commentNum: 50
+
+        });
     }
+
   },
   // 监听url变化
   // watch: {

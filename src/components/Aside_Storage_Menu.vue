@@ -24,9 +24,31 @@
         v-model="value"
         :options="options"
         :props="{ expandTrigger: 'hover' }"
-        @change="handleChange"
+        @change="handleStorageDirChange"
       ></el-cascader>
-    </div>
+       <el-button @click="createStorageDir" type="primary">创建收藏夹</el-button>
+      
+
+       <!--创建收藏夹的表单-->
+       <el-dialog
+  title="创建新收藏夹"
+  :visible.sync="dialogVisible"
+  width="30%"
+  :before-close="handleDialogClose">
+ 上级目录：  <el-cascader
+        v-model="value_create"
+        :options="options_create"
+        :props="{ expandTrigger: 'hover' }"
+      ></el-cascader>
+  <el-form  label-position="left" label-width="80px" >
+  <el-form-item label="名称">
+    <el-input v-model="newStorageDirName"></el-input>
+  </el-form-item>
+    <el-button @click="confirmCreateDir" type="primary">创建</el-button>
+</el-form>
+</el-dialog>
+      
+      </div>
   </div>
 </template>
 
@@ -35,6 +57,11 @@
 export default {
   data() {
     return {
+      //创建收藏夹时候的级联表单数据
+      value_create: '',
+      options_create: '',
+      dialogVisible: false,
+      newStorageDirName: '',
       selectPeopleId: 0,
       currentMenu: '',
       menu_list: [{
@@ -48,204 +75,45 @@ export default {
       ],
       value: [],
       options: [{
-        value: 'zhinan',
-        label: '指南',
+        value: 'default',
+        label: '默认收藏夹'
+      },
+      {
+        value: 'paper',
+        label: '论文',
         children: [{
-          value: 'shejiyuanze',
-          label: '设计原则',
-          children: [{
-            value: 'yizhi',
-            label: '一致'
-          }, {
-            value: 'fankui',
-            label: '反馈'
-          }, {
-            value: 'xiaolv',
-            label: '效率'
-          }, {
-            value: 'kekong',
-            label: '可控'
-          }]
+          value: 'Knowledge based systems',
+          label: 'Knowledge based systems'
         }, {
-          value: 'daohang',
-          label: '导航',
-          children: [{
-            value: 'cexiangdaohang',
-            label: '侧向导航'
-          }, {
-            value: 'dingbudaohang',
-            label: '顶部导航'
-          }]
+          value: 'Pattern analysis and application',
+          label: 'Pattern analysis and application'
         }]
       }, {
-        value: 'zujian',
-        label: '组件',
+        value: 'favoriate',
+        label: '我喜欢的',
         children: [{
-          value: 'basic',
-          label: 'Basic',
+          value: 'music',
+          label: '音乐',
           children: [{
-            value: 'layout',
-            label: 'Layout 布局'
+            value: 'Jay',
+            label: '周杰伦',
+            children: [{
+              value: 'night seven',
+              label: '夜的第七章'
+            }]
           }, {
-            value: 'color',
-            label: 'Color 色彩'
-          }, {
-            value: 'typography',
-            label: 'Typography 字体'
-          }, {
-            value: 'icon',
-            label: 'Icon 图标'
-          }, {
-            value: 'button',
-            label: 'Button 按钮'
+            value: 'JJ',
+            label: '林俊杰'
           }]
         }, {
-          value: 'form',
-          label: 'Form',
-          children: [{
-            value: 'radio',
-            label: 'Radio 单选框'
-          }, {
-            value: 'checkbox',
-            label: 'Checkbox 多选框'
-          }, {
-            value: 'input',
-            label: 'Input 输入框'
-          }, {
-            value: 'input-number',
-            label: 'InputNumber 计数器'
-          }, {
-            value: 'select',
-            label: 'Select 选择器'
-          }, {
-            value: 'cascader',
-            label: 'Cascader 级联选择器'
-          }, {
-            value: 'switch',
-            label: 'Switch 开关'
-          }, {
-            value: 'slider',
-            label: 'Slider 滑块'
-          }, {
-            value: 'time-picker',
-            label: 'TimePicker 时间选择器'
-          }, {
-            value: 'date-picker',
-            label: 'DatePicker 日期选择器'
-          }, {
-            value: 'datetime-picker',
-            label: 'DateTimePicker 日期时间选择器'
-          }, {
-            value: 'upload',
-            label: 'Upload 上传'
-          }, {
-            value: 'rate',
-            label: 'Rate 评分'
-          }, {
-            value: 'form',
-            label: 'Form 表单'
-          }]
-        }, {
-          value: 'data',
-          label: 'Data',
-          children: [{
-            value: 'table',
-            label: 'Table 表格'
-          }, {
-            value: 'tag',
-            label: 'Tag 标签'
-          }, {
-            value: 'progress',
-            label: 'Progress 进度条'
-          }, {
-            value: 'tree',
-            label: 'Tree 树形控件'
-          }, {
-            value: 'pagination',
-            label: 'Pagination 分页'
-          }, {
-            value: 'badge',
-            label: 'Badge 标记'
-          }]
-        }, {
-          value: 'notice',
-          label: 'Notice',
-          children: [{
-            value: 'alert',
-            label: 'Alert 警告'
-          }, {
-            value: 'loading',
-            label: 'Loading 加载'
-          }, {
-            value: 'message',
-            label: 'Message 消息提示'
-          }, {
-            value: 'message-box',
-            label: 'MessageBox 弹框'
-          }, {
-            value: 'notification',
-            label: 'Notification 通知'
-          }]
-        }, {
-          value: 'navigation',
-          label: 'Navigation',
-          children: [{
-            value: 'menu',
-            label: 'NavMenu 导航菜单'
-          }, {
-            value: 'tabs',
-            label: 'Tabs 标签页'
-          }, {
-            value: 'breadcrumb',
-            label: 'Breadcrumb 面包屑'
-          }, {
-            value: 'dropdown',
-            label: 'Dropdown 下拉菜单'
-          }, {
-            value: 'steps',
-            label: 'Steps 步骤条'
-          }]
-        }, {
-          value: 'others',
-          label: 'Others',
-          children: [{
-            value: 'dialog',
-            label: 'Dialog 对话框'
-          }, {
-            value: 'tooltip',
-            label: 'Tooltip 文字提示'
-          }, {
-            value: 'popover',
-            label: 'Popover 弹出框'
-          }, {
-            value: 'card',
-            label: 'Card 卡片'
-          }, {
-            value: 'carousel',
-            label: 'Carousel 走马灯'
-          }, {
-            value: 'collapse',
-            label: 'Collapse 折叠面板'
-          }]
-        }]
-      }, {
-        value: 'ziyuan',
-        label: '资源',
-        children: [{
-          value: 'axure',
-          label: 'Axure Components'
-        }, {
-          value: 'sketch',
-          label: 'Sketch Templates'
-        }, {
-          value: 'jiaohu',
-          label: '组件交互文档'
+          value: 'movie',
+          label: '电影'
         }]
       }]
     }
   },
   methods: {
-    //将聊天对象用户名传给父组件PrivateLetter.vue
+    //将收藏对象传给父组件PrivateLetter.vue
     selectMenuType(item) {
 
       this.selectTypeId = item.id;
@@ -253,14 +121,66 @@ export default {
       console.log("Aside_Storage_Menu -- selectMenuType --  getMenuTypeFromChildren : ", item)
     },
     //级联菜单
-    handleChange(value) {
+    handleStorageDirChange(value) {
       this.currentMenu = '';
       for (var i = 0; i < value.length; i++) {
         this.currentMenu = this.currentMenu + "/" + value[i];
-        this.currentMenu = this.currentMenu + '\n';
+      }
+      //转成storage_type类型传给父组件storage.vue
+      var obj = {};
+      obj.type = 'dir';
+      var label = this.findLabel(value[value.length - 1], this.options);
+      obj.name = label;
+      obj.currentMenu = this.currentMenu;
+      this.selectMenuType(obj);
+      // console.log("value: " + value);
+      // console.log("label:" + label);
+      //改变路由
+      this.$router.push({ path: '/storage_dir' + this.currentMenu, query: { id: 1 } });
+    }
+    ,
+    //options菜单中寻找value对应的label
+    findLabel(value, menu) {
+      if (menu == null) {
+        return '';
+      }
+      // console.log("findlabel: ", value, menu);
+      for (var i = 0; i < menu.length; i++) {
+        if (menu[i].value === value) {
+          return menu[i].label;
+        }
+      }
+      for (var i = 0; i < menu.length; i++) {
+        var res = this.findLabel(value, menu[i].children);
+        if (res != '') {
+          return res;
+        }
+      }
+      return '';
+    },
+    createStorageDir() {
+      this.dialogVisible = true;
+      this.options_create = this.options;
+      // console.log(this.value_create)
+
+    },
+    handleDialogClose() {
+      this.dialogVisible = false;
+    },
+    confirmCreateDir() {
+      var newfile = this.newStorageDirName.trim();
+      if (newfile == '') {
+        this.$message.error('新创建的文件夹名称不能为空！');
+        return;
       }
 
-      console.log(value);
+      var dir = '';
+      for (var i = 0; i < this.value_create.length; i++) {
+        dir = dir + '/' + this.value_create[i];
+      }
+      dir = dir + '/' + newfile;
+      console.log("newStorageDirName -- ", dir)
+      this.handleDialogClose();
     }
   }
 

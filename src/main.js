@@ -65,6 +65,13 @@ const routes = [
             component: () => import("./components/Storage_List.vue"),
             meta: { title: "收藏的文章" },
           },
+          {
+            //动态路由匹配
+            path: "/storage_Dir/*",
+            name: "Storage_Dir",
+            component: () => import("./components/Storage_List.vue"),
+            meta: { title: "收藏的文件夹" },
+          },
         ],
       },
       {
@@ -122,6 +129,12 @@ const routes = [
     path: "/storage/article/detail/",
     name: "Storage_Article_Detail",
     component: () => import("./components/detail/Storage_Article.vue"),
+    meta: { title: "新开用户详情页" },
+  },
+  {
+    path: "/storage/dir/detail",
+    name: "Storage_Dir_Detail",
+    component: () => import("./components/detail/Storage_Dynamic.vue"),
     meta: { title: "新开用户详情页" },
   },
 ];

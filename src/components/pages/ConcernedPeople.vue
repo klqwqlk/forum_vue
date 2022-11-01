@@ -1,10 +1,17 @@
 <template>
-  <div>关注的人</div>
+  <div>
+    <ConcernedPeople_ListVue></ConcernedPeople_ListVue>
+  </div>
 </template>
 
 <script>
 
+import ConcernedPeople_ListVue from '../concernedPeople/ConcernedPeople_List.vue';
+
 export default {
+  components: {
+    ConcernedPeople_ListVue
+  },
   data() {
     return {
 
