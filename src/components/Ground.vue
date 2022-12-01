@@ -32,6 +32,13 @@
             >默认链接</el-link
           ></el-col
         >
+        <el-button
+          @click="drawer = true"
+          type="text"
+          style="margin-left: 16px"
+        >
+          发表动态
+        </el-button>
       </el-row></el-header
     >
     <el-container style="height: 640px; border: 1px solid #eee">
@@ -45,6 +52,50 @@
         </el-main>
       </el-container>
     </el-container>
+
+    <el-drawer title="发表动态/文章" :visible.sync="drawer" size="50%">
+      <div>
+        <el-button @click="createDynamic = true">发表动态</el-button><br></br>
+        <el-button @click="createArticle = true">发表文章</el-button>
+        <el-drawer
+          title="动态"
+          :append-to-body="true"
+          :before-close="handleDynamicClose"
+          :visible.sync="createDynamic"
+        >
+         <el-input
+  type="textarea"
+  :autosize="{ minRows: 10, maxRows: 30}"
+  placeholder="请输入内容"
+  maxlength="1000"
+  v-model="DynamicContent">
+</el-input>
+        </el-drawer>
+        <el-drawer
+          title="文章"
+          :append-to-body="true"
+          :before-close="handleArticleClose"
+          :visible.sync="createArticle"
+        >
+          <el-input
+  type="textarea"
+  autosize
+  placeholder="请输入标题"
+  maxlength="100"
+  minlength="1"
+  v-model="ArticleTitle">
+</el-input>
+<div style="margin: 20px 0;"></div>
+<el-input
+  type="textarea"
+  :autosize="{ minRows: 10, maxRows: 30}"
+  placeholder="请输入内容"
+  maxlength="50000"
+  v-model="ArticleContent">
+</el-input>
+        </el-drawer>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -61,7 +112,13 @@ export default {
       avater: '',
       username: '',
       asideShow: true,
-      asideWidth: 200
+      asideWidth: 200,
+      createArticle: false,
+      createDynamic: false,
+      drawer: false,
+      DynamicContent: '',
+      ArticleTitle: '',
+      ArticleContent: ''
     };
   },
   methods: {
@@ -77,6 +134,23 @@ export default {
       // console.log(this.asideWidth);
 
 
+    },
+    handleDynamicClose(done) {
+      this.$confirm('还有未保存的工作哦确定关闭吗？')
+        .then(_ => {
+          done();
+          this.DynamicContent = '';
+        })
+        .catch(_ => { });
+    },
+    handleArticleClose(done) {
+      this.$confirm('还有未保存的工作哦确定关闭吗？')
+        .then(_ => {
+          done();
+          this.ArticleTitle = '';
+          this.ArticleContent = '';
+        })
+        .catch(_ => { });
     }
   },
   components: { Aside }

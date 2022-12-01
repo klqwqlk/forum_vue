@@ -54,7 +54,7 @@ export default {
 
   data() {
     return {
-      label: '关注的人',
+      label: '谁关注我',
       checkedConcerned: false,
       searchInput: '',
       currentPage: 1,
@@ -113,14 +113,14 @@ export default {
         this.records = [];
         this.records.push({
           userid: 1,
-          username: '我关注的用户1',
+          username: '关注我的用户1',
           content: '简短的自我介绍 1',
           concernedFlag: true,
           concernedTime: '2022-10-26 17:20'
         },
           {
             userid: 2,
-            username: '我关注的用户2',
+            username: '关注我的用户2',
             content: '简短的自我介绍 2',
             concernedFlag: true,
             concernedTime: '2022-10-26 17:20'

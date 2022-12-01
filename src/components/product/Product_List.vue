@@ -3,13 +3,13 @@
   <div >
    
     <!--如果type=='',显示空白-->
-  <div v-if="this.storage_type != null && this.storage_type.type==''"> </div>
+  <div v-if="this.product_type != null && this.product_type.type==''"> </div>
   <div v-else>
     <el-table :data="records" style="width: 100%">
       <el-table-column prop="records" :label="typeLabel" width="full">
         <template slot-scope="scope" >
           <el-form  v-model="scope.row" :inline="true" class="demo-form-inline">
-            <div @click="getStorageDetail(scope.row)">
+            <div @click="getProductDetail(scope.row)">
             <el-form-item>
               
               <el-link @click="get_user(scope.row.pubishUser)">头像 </el-link>&nbsp;
@@ -58,9 +58,9 @@
 <script>
 
 export default {
-  name: 'Storage_List',
+  name: 'Product_List',
   //父组件Storage.vue传过来的对象及时间戳
-  props: { storage_type: {}, query_storage_time: 0 },
+  props: { product_type: {}, query_product_time: 0 },
   data() {
     return {
 
@@ -85,25 +85,25 @@ export default {
     },
     handleCurrentChange(val) {
 
-      console.log(`Storage_List.vue -- 当前页: ${val}`);
+      console.log(`Product_List.vue-- 当前页: ${val}`);
 
     },
     updateType() {
-      this.typeLabel = this.storage_type.name
+      this.typeLabel = this.product_type.name
       //按收藏类别
-      if (this.storage_type.type == 'Dynamic') {
-        this.getMyStorageDynamic();
-      } else if (this.storage_type.type == 'Article') {
-        this.getMyStorageArticle();
+      if (this.product_type.type == 'Dynamic') {
+        this.getMyProductDynamic();
+      } else if (this.product_type.type == 'Article') {
+        this.getMyProductArticle();
         //按收藏文件夹
-      } else if (this.storage_type.type == 'dir') {
+      } else if (this.product_type.type == 'dir') {
         this.getMyStorageFromDir();
       }
       console.log("updateType....")
     },
     //新开页，动态或文章的详情
-    getStorageDetail(item) {
-      var url = 'http://localhost:8080/storage/' + this.storage_type.type.toLowerCase() + '/detail/?id=' + item.id;
+    getProductDetail(item) {
+      var url = 'http://localhost:8080/product/' + this.product_type.type.toLowerCase() + '/detail/?id=' + item.id;
       window.open(url);
     },
     //打开新页面
@@ -111,7 +111,7 @@ export default {
       var url = 'http://localhost:8080/user/?id=' + user.userId
       window.open(url);
     },
-    getMyStorageDynamic() {
+    getMyProductDynamic() {
       this.records = [];
       this.records.push({
         id: 1,
@@ -119,7 +119,7 @@ export default {
           userId: 0,
           userName: 'user1'
         },
-        content: '收藏的动态。。。1',
+        content: '创作的动态。。。1',
         encourgeNum: 100,
         commentNum: 20
 
@@ -129,14 +129,14 @@ export default {
           userId: 1,
           userName: 'user2'
         },
-        content: '收藏的动态。。。2',
+        content: '创作的动态。。。2',
         encourgeNum: 121,
         commentNum: 20
 
       }
       );
     },
-    getMyStorageArticle() {
+    getMyProductArticle() {
 
       this.records = [];
       this.records.push({
@@ -145,7 +145,7 @@ export default {
           userId: 0,
           userName: 'user1'
         },
-        content: '收藏的文章。。。1',
+        content: '创作的文章。。。1',
         encourgeNum: 200,
         commentNum: 50
 
@@ -156,7 +156,7 @@ export default {
             userId: 1,
             userName: 'user2'
           },
-          content: '收藏的文章。。。2',
+          content: '创作的文章。。。2',
           encourgeNum: 200,
           commentNum: 50
 
@@ -165,7 +165,7 @@ export default {
     //按文件夹获取收藏内容
     getMyStorageFromDir() {
       //收藏目录
-      console.log(this.storage_type.currentMenu);
+      console.log(this.product_type.currentMenu);
 
       this.records = [];
       this.records.push({
@@ -193,28 +193,14 @@ export default {
     }
 
   },
-  // 监听url变化
-  // watch: {
-  //   $route(to, from) {
-  //     if (to.fullPath.indexOf("storage_Dynamic") != -1) {
-  //       // console.log("storage_Dynamic")
-  //       this.typeLabel = '收藏的动态';
-  //       this.storage_type = 'dynamic';
-  //     } else if (to.fullPath.indexOf("storage_Article") != -1) {
-  //       // console.log("storage_Article")
-  //       this.typeLabel = '收藏的文章';
-  //       this.storage_type = 'article';
-  //     }
-  //   }
-  // },
 
-  //监听父组件Storage.vue 传过来的storage_type对象
+  //监听父组件MyProduct.vue 传过来的product_type对象
   watch: {
-    //监听父组件Storage.vue传来的时间戳，调用刷新方法
-    query_storage_time(newVal, oldVal) {
+    //监听父组件MyProduct.vue传来的时间戳，调用刷新方法
+    query_product_time(newVal, oldVal) {
       // console.log(newVal)
       // console.log(oldVal)
-      // console.log(" watch storage_type.time  ", newVal);
+      console.log(" watch query_product_time  ", newVal);
       this.updateType();
     },
   }

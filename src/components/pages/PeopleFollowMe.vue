@@ -1,10 +1,17 @@
 <template>
-  <div>谁关注我</div>
+  <div>
+    <PeopleFollowMe_List></PeopleFollowMe_List>
+  </div>
 </template>
 
 <script>
 
+import PeopleFollowMe_List from '../peopleFollowMe/PeopleFollowMe_List.vue';
+
 export default {
+  components: {
+    PeopleFollowMe_List
+  },
   data() {
     return {
 

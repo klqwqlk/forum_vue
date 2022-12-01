@@ -85,6 +85,20 @@ const routes = [
         name: "MyProduct",
         component: () => import("./components/pages/MyProduct.vue"),
         meta: { title: "我的创作" },
+        children: [
+          {
+            path: "/Product_Dynamic",
+            name: "Product_Dynamic",
+            component: () => import("./components/product/Product_List.vue"),
+            meta: { title: "创作的动态" },
+          },
+          {
+            path: "/Product_Article",
+            name: "Product_Article",
+            component: () => import("./components/product/Product_List.vue"),
+            meta: { title: "创作的文章" },
+          },
+        ],
       },
       {
         path: "/topic_circle",
@@ -123,19 +137,37 @@ const routes = [
     path: "/storage/dynamic/detail/",
     name: "Storage_Dynamic_Detail",
     component: () => import("./components/detail/Storage_Dynamic.vue"),
-    meta: { title: "新开用户详情页" },
+    meta: { title: "新开收藏动态详情页" },
   },
   {
     path: "/storage/article/detail/",
     name: "Storage_Article_Detail",
     component: () => import("./components/detail/Storage_Article.vue"),
-    meta: { title: "新开用户详情页" },
+    meta: { title: "新开收藏文章详情页" },
   },
   {
     path: "/storage/dir/detail",
     name: "Storage_Dir_Detail",
     component: () => import("./components/detail/Storage_Dynamic.vue"),
-    meta: { title: "新开用户详情页" },
+    meta: { title: "新开收藏文件夹详情页" },
+  },
+  {
+    path: "/product/dynamic/detail/",
+    name: "Product_Dynamic_Detail",
+    component: () => import("./components/product/Product_Dynamic.vue"),
+    meta: { title: "新开创作动态详情页" },
+  },
+  {
+    path: "/product/article/detail/",
+    name: "Product_Article_Detail",
+    component: () => import("./components/product/Product_Article.vue"),
+    meta: { title: "新开创作文章详情页" },
+  },
+  {
+    path: "/circle",
+    name: "Circle",
+    component: () => import("./components/topic_circle/Circle_Detail.vue"),
+    meta: { title: "新开话题圈详情页" },
   },
 ];
 

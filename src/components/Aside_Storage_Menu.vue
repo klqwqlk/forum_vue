@@ -21,6 +21,7 @@
     <div class="block">
       <span style="size:2px;" class="demonstration">{{currentMenu}}</span>
       <el-cascader
+      ref="cascader_look"
         v-model="value"
         :options="options"
         :props="{ expandTrigger: 'hover' }"
@@ -36,9 +37,10 @@
   width="30%"
   :before-close="handleDialogClose">
  上级目录：  <el-cascader
+ ref="cascader_create"
         v-model="value_create"
         :options="options_create"
-        :props="{ expandTrigger: 'hover' }"
+        :props="{ expandTrigger: 'click' }"
       ></el-cascader>
   <el-form  label-position="left" label-width="80px" >
   <el-form-item label="名称">
@@ -51,6 +53,8 @@
       </div>
   </div>
 </template>
+
+
 
 <script>
 
@@ -131,10 +135,14 @@ export default {
       obj.type = 'dir';
       var label = this.findLabel(value[value.length - 1], this.options);
       obj.name = label;
+      // console.log(" handleStorageDirChange " + label);
+      // console.log(" handleStorageDirChange " + this.value_create);
       obj.currentMenu = this.currentMenu;
       this.selectMenuType(obj);
       // console.log("value: " + value);
       // console.log("label:" + label);
+      let nodesInfo = this.$refs['cascader_look'].getCheckedNodes();
+      console.log('nodesInfo>>>>>', nodesInfo)
       //改变路由
       this.$router.push({ path: '/storage_dir' + this.currentMenu, query: { id: 1 } });
     }
@@ -161,7 +169,8 @@ export default {
     createStorageDir() {
       this.dialogVisible = true;
       this.options_create = this.options;
-      // console.log(this.value_create)
+      console.log(" createStorageDir " + this.value_create);
+      console.log(" createStorageDir " + this.options_create);
 
     },
     handleDialogClose() {
@@ -169,17 +178,47 @@ export default {
     },
     confirmCreateDir() {
       var newfile = this.newStorageDirName.trim();
+
       if (newfile == '') {
         this.$message.error('新创建的文件夹名称不能为空！');
         return;
       }
-
       var dir = '';
       for (var i = 0; i < this.value_create.length; i++) {
         dir = dir + '/' + this.value_create[i];
       }
       dir = dir + '/' + newfile;
       console.log("newStorageDirName -- ", dir)
+      var currentdir = this.options;
+      var parentdir = currentdir;
+      var dirarr = dir.split("/");
+      for (var i = 0; i < dirarr.length - 1; i++) {
+        if (dirarr[i] == null || dirarr[i].length == 0) {
+          continue;
+        } else {
+          for (var j = 0; j < currentdir.length; j++) {
+            if (currentdir[j].value == dirarr[i]) {
+              currentdir = currentdir[j];
+              parentdir = currentdir;
+              break;
+            }
+          }
+        }
+      }
+      var newdir = {
+        value: newfile,
+        label: newfile
+      }
+      console.log(parentdir);
+      if (parentdir == this.options) {
+        parentdir.push(newdir);
+      } else {
+        if (parentdir.children == null) {
+          parentdir.children = [];
+        }
+        parentdir.children.push(newdir);
+      }
+      console.log(parentdir);
       this.handleDialogClose();
     }
   }
