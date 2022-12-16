@@ -10,7 +10,8 @@
           </div>
         </el-col>
         <el-col :span="2">
-          {{ username == "" ? "未登录" : username }}
+          <router-link to="/user?id=1" v-if="user != null">{{user.userName}}</router-link>
+          <router-link to="/Login" v-else >未登录</router-link>
         </el-col>
         <el-col :span="1">
           <el-switch
@@ -109,6 +110,7 @@ export default {
   },
   data() {
     return {
+      user: {},
       avater: '',
       username: '',
       asideShow: true,
@@ -151,9 +153,19 @@ export default {
           this.ArticleContent = '';
         })
         .catch(_ => { });
-    }
+    },
+
   },
-  components: { Aside }
+  components: { Aside },
+  created() {
+    let user = window.localStorage.getItem("user")
+    //第一次进入页面刷新一次，仅一次
+    if (user != null && user != '') {
+      this.user = JSON.parse(user);
+    }
+
+    //判断token是否过期
+  }
 }
 </script>
 

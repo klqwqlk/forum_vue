@@ -13,7 +13,7 @@ export default {
   methods: {
     getUrlParam() {
       var tem = this.$route.query.id;
-      if (tem.length > 0) {
+      if (tem != null && tem.length > 0) {
         this.userId = tem;
       }
 

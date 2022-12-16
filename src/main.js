@@ -3,16 +3,31 @@ import App from "./App.vue";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import VueRouter from "vue-router";
+// import Vuex from "vuex";
+// import store from "./store";
 
 Vue.use(VueRouter);
 Vue.use(ElementUI);
+// Vue.use(Vuex);
 
 const routes = [
   {
     path: "/",
     name: "Login",
     component: () => import("./components/Login.vue"),
-    meta: { title: "首页" },
+    meta: {
+      title: "首页",
+      notRequireAuth: true, //不用登录
+    },
+  },
+  {
+    path: "/Login",
+    name: "Login",
+    component: () => import("./components/Login.vue"),
+    meta: {
+      title: "首页",
+      notRequireAuth: true, //不用登录
+    },
   },
   {
     path: "/ground",
@@ -25,7 +40,10 @@ const routes = [
         path: "/allTrends",
         name: "AllTrends",
         component: () => import("./components/pages/AllTrends.vue"),
-        meta: { title: "全部动态" },
+        meta: {
+          title: "全部动态",
+          notRequireAuth: true,
+        },
       },
       {
         path: "/careAbout",
@@ -104,7 +122,10 @@ const routes = [
         path: "/topic_circle",
         name: "Topic_Circle",
         component: () => import("./components/pages/Topic_Circle.vue"),
-        meta: { title: "话题圈" },
+        meta: {
+          title: "话题圈",
+          notRequireAuth: true,
+        },
       },
       {
         path: "/topic_circle_join",
@@ -183,4 +204,69 @@ Vue.config.productionTip = false;
 new Vue({
   render: (h) => h(App),
   router: router,
+  // store,
 }).$mount("#app");
+
+router.beforeEach((to, from, next) => {
+  //已经登录了
+  if (to.path == "/Login" || to.path == "/") {
+    var s = window.localStorage.getItem("AuthToken");
+    if (s != null && s != "") {
+      alert("已经登录了");
+      return;
+    }
+  }
+
+  // var user = store.state.user;
+  console.log(
+    " window.localStorage['user'] " + window.localStorage.getItem("user")
+  );
+  var user = null;
+  if (window.localStorage["user"]) {
+    user = JSON.parse(window.localStorage.getItem("user"));
+  }
+  if (to.matched.some((m) => m.meta.notRequireAuth)) {
+    //不需要登录
+    next();
+  } else {
+    // 对路由进行验证
+    if (user != null) {
+      // 已经登陆
+      next(); // 正常跳转到你设置好的页面
+    } else {
+      console.log("main.js " + user);
+      // 未登录则跳转到登陆界面，query:{ Rurl: to.fullPath}表示把当前路由信息传递过去方便登录后跳转回来；
+      Vue.prototype
+        .$confirm("还未登录，是否登录?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+        .then(() => {
+          next({ path: "/Login" });
+        });
+    }
+  }
+});
+
+import request from "./utils/request";
+
+//响应拦截
+request.interceptors.response.use(
+  (res) => {
+    console.log("response interceptor ");
+    console.log(res);
+    return res.data;
+  },
+  (err) => {
+    // 如果 401 状态码
+    if (err.response && err.response.status === 401) {
+      console.log("response interceptor ");
+      console.log(err.response);
+      window.localStorage.removeItem("AuthToken");
+      window.localStorage.removeItem("user");
+      router.push("/login"); //引入 router 模块
+    }
+    return Promise.reject(err);
+  }
+);
